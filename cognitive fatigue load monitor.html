@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Cognitive Load & Fatigue Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #93c5fd; 
+            border: 4px solid #f0f9ff;
+        }
+        .timeline-path {
+            position: absolute;
+            left: -22px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e0f2fe;
+            z-index: -1;
+        }
+        .interactive-element {
+            transition: all 0.3s ease;
+        }
+        .interactive-element:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-tab {
+            border-bottom-width: 2px;
+            border-color: #2563eb;
+            color: #1e3a8a;
+        }
+    </style>
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a top-down narrative journey. It begins with a high-level summary (Hero), defines the problem (The Challenge), presents the solution (Our System), and then dives into an interactive explanation of its core functionality (Interactive Workflow). Subsequent sections provide layered detail on the technology stack, project plan, and real-world impact. This structure was chosen to guide a non-expert user logically from the "what" and "why" to the "how," with interactive elements to maintain engagement and clarify complex processes. -->
+    <!-- Visualization & Content Choices: 
+        - Hero Section: Inform -> Text -> Concisely introduces the project's purpose.
+        - System Workflow: Organize/Explain -> Interactive Diagram (HTML/CSS/JS) -> Allows users to explore the data pipeline step-by-step without being overwhelmed. Justification: Breaks down a complex process into digestible, user-controlled chunks.
+        - Live Data Simulation: Change/Inform -> Line Chart (Chart.js) -> Provides a tangible, dynamic representation of the system's output. Interaction: Buttons trigger state changes, making the concept of "fatigue detection" concrete. Justification: Transforms an abstract concept into a visual experience.
+        - Project Timeline: Organize/Change -> Interactive Timeline (HTML/CSS/JS) -> Presents the project plan in a more engaging format than a list. Interaction: Clicking a phase reveals details. Justification: Better visual organization of temporal data.
+        - Tech Stack & Impact: Inform/Organize -> Card Layouts (HTML/Tailwind) -> Presents structured information cleanly. Justification: Standard, effective UI pattern for grouped information.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-blue-800">Cognitive Monitor Project</div>
+            <ul class="flex space-x-6 text-slate-600 font-medium">
+                <li><a href="#overview" class="hover:text-blue-600 transition">Overview</a></li>
+                <li><a href="#workflow" class="hover:text-blue-600 transition">Workflow</a></li>
+                <li><a href="#tech" class="hover:text-blue-600 transition">Technology</a></li>
+                <li><a href="#impact" class="hover:text-blue-600 transition">Impact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <!-- Hero Section -->
+        <section id="overview" class="text-center py-16 md:py-24">
+            <h1 class="text-4xl md:text-6xl font-bold text-blue-900 leading-tight">Cognitive Load & Fatigue Monitor</h1>
+            <p class="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">A wearable embedded system using AI to provide real-time fatigue assessment for operators in high-stress environments, enhancing safety and performance.</p>
+            <div class="mt-8">
+                <a href="#workflow" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-700 transition-transform transform hover:scale-105 inline-block">See How It Works</a>
+            </div>
+        </section>
+
+        <!-- The Challenge & Solution -->
+        <section class="py-16 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-blue-900">The Challenge: The Human Factor</h2>
+                <p class="mt-4 text-slate-600">In high-stakes professions like aviation, medicine, and military operations, human error induced by fatigue or cognitive overload can have catastrophic consequences. Traditional methods like mandated rest periods are a one-size-fits-all solution that fails to account for individual resilience and external stressors.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 border border-slate-200">
+                <h3 class="text-2xl font-bold text-blue-800">Our Solution: Objective Monitoring</h3>
+                <p class="mt-3 text-slate-600">This project provides an objective, data-driven tool for real-time fatigue monitoring. By detecting the early physiological signs of declining cognitive performance, the system can provide timely alerts, enabling preventative action before a critical error occurs.</p>
+            </div>
+        </section>
+
+        <!-- Interactive Workflow Section -->
+        <section id="workflow" class="py-16">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-blue-900">Interactive System Workflow</h2>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Follow the data from acquisition to alert. Click on each stage to learn more about the process.</p>
+            </div>
+
+            <div class="mt-12 grid md:grid-cols-2 gap-8">
+                <!-- Left Side: Interactive Diagram -->
+                <div class="space-y-6">
+                    <div id="stage1" class="workflow-stage p-6 rounded-xl border-2 border-blue-200 bg-white cursor-pointer interactive-element" onclick="showDetails('details1')">
+                        <h3 class="text-xl font-bold text-blue-800 flex items-center"><span class="text-3xl mr-3">①</span> Data Acquisition</h3>
+                    </div>
+                    <div id="details1" class="workflow-details hidden pl-12 text-slate-600 space-y-2">
+                        <p><strong class="text-slate-700">Eye Tracking:</strong> A camera module monitors blink rate, duration, and percentage of eye closure (PERCLOS).</p>
+                        <p><strong class="text-slate-700">HRV Sensing:</strong> A PPG sensor measures Heart Rate Variability, a key indicator of stress and nervous system regulation.</p>
+                    </div>
+
+                    <div class="text-center text-2xl text-blue-300">▼</div>
+
+                    <div id="stage2" class="workflow-stage p-6 rounded-xl border-2 border-blue-200 bg-white cursor-pointer interactive-element" onclick="showDetails('details2')">
+                        <h3 class="text-xl font-bold text-blue-800 flex items-center"><span class="text-3xl mr-3">②</span> On-Device Processing</h3>
+                    </div>
+                    <div id="details2" class="workflow-details hidden pl-12 text-slate-600">
+                         <p>The ESP32-S3 microcontroller extracts key features from the raw sensor data, creating a numerical "feature vector" that represents the user's current state.</p>
+                    </div>
+
+                    <div class="text-center text-2xl text-blue-300">▼</div>
+                    
+                    <div id="stage3" class="workflow-stage p-6 rounded-xl border-2 border-blue-200 bg-white cursor-pointer interactive-element" onclick="showDetails('details3')">
+                        <h3 class="text-xl font-bold text-blue-800 flex items-center"><span class="text-3xl mr-3">③</span> TinyML Inference</h3>
+                    </div>
+                    <div id="details3" class="workflow-details hidden pl-12 text-slate-600">
+                        <p>The feature vector is fed into a pre-trained TensorFlow Lite model running on the MCU. The model outputs a probability score for each state: 'Alert', 'Fatigued', or 'Overloaded'.</p>
+                    </div>
+                    
+                    <div class="text-center text-2xl text-blue-300">▼</div>
+
+                    <div id="stage4" class="workflow-stage p-6 rounded-xl border-2 border-blue-200 bg-white cursor-pointer interactive-element" onclick="showDetails('details4')">
+                        <h3 class="text-xl font-bold text-blue-800 flex items-center"><span class="text-3xl mr-3">④</span> Real-Time Alert</h3>
+                    </div>
+                    <div id="details4" class="workflow-details hidden pl-12 text-slate-600">
+                       <p>If the 'Fatigued' score exceeds a threshold, the system triggers a vibration, visual warning, or a wireless signal to a command console.</p>
+                    </div>
+                </div>
+                
+                <!-- Right Side: Live Simulation -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 h-full flex flex-col">
+                    <h3 class="text-2xl font-bold text-center text-blue-900 mb-4">Live Data Simulation</h3>
+                    <div class="flex justify-center items-center space-x-4 mb-4">
+                        <span class="font-medium text-slate-600">System Status:</span>
+                        <span id="status-badge" class="px-4 py-1 text-sm font-semibold rounded-full transition-colors">Alert</span>
+                    </div>
+                    <div class="chart-container flex-grow" style="position: relative; max-height: 350px; width: 100%;">
+                        <canvas id="fatigueChart"></canvas>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-slate-500 mb-3">Simulate different operator states:</p>
+                        <div class="flex justify-center gap-4">
+                             <button id="alertBtn" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition">Simulate Alert</button>
+                             <button id="fatiguedBtn" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition">Simulate Fatigued</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Deep Dive -->
+        <section id="tech" class="py-16">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-blue-900">Technology Deep Dive</h2>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">The project is built on a foundation of modern embedded hardware and edge AI software.</p>
+            </div>
+            <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-element border border-slate-200">
+                    <h4 class="text-lg font-bold text-blue-800">MCU: ESP32-S3</h4>
+                    <p class="mt-2 text-slate-600 text-sm">A dual-core MCU with Wi-Fi, Bluetooth, and AI acceleration instructions, perfect for running TinyML models efficiently at the edge.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-element border border-slate-200">
+                    <h4 class="text-lg font-bold text-blue-800">Camera: OV2640</h4>
+                    <p class="mt-2 text-slate-600 text-sm">A low-power, compact camera module providing sufficient resolution for the lightweight computer vision algorithms used in eye-tracking.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-element border border-slate-200">
+                    <h4 class="text-lg font-bold text-blue-800">Sensor: MAX30102</h4>
+                    <p class="mt-2 text-slate-600 text-sm">An integrated PPG sensor that accurately measures beat-to-beat intervals, which is essential for calculating Heart Rate Variability (HRV).</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md interactive-element border border-slate-200">
+                    <h4 class="text-lg font-bold text-blue-800">ML: TensorFlow Lite</h4>
+                    <p class="mt-2 text-slate-600 text-sm">The ML model is implemented using TensorFlow Lite for Microcontrollers, allowing complex neural networks to run within the MCU's memory constraints.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Timeline Section -->
+        <section class="py-16">
+            <div class="text-center">
+                 <h2 class="text-3xl font-bold text-blue-900">Project Development Timeline</h2>
+                 <p class="mt-4 text-slate-600 max-w-2xl mx-auto">A 12-week structured plan to take the project from concept to a working proof-of-concept.</p>
+            </div>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative pl-8">
+                    <div class="timeline-path"></div>
+                    <div class="timeline-item mb-10">
+                        <h4 class="font-bold text-blue-800">Weeks 1-2: Research & Prototyping</h4>
+                        <p class="text-sm text-slate-600">Component sourcing and initial hardware setup on a breadboard. Verified communication with camera and PPG sensors.</p>
+                    </div>
+                    <div class="timeline-item mb-10">
+                        <h4 class="font-bold text-blue-800">Weeks 3-5: Data Acquisition & Feature Extraction</h4>
+                        <p class="text-sm text-slate-600">Developed robust firmware to capture clean sensor data and implemented algorithms to calculate blink metrics and HRV.</p>
+                    </div>
+                    <div class="timeline-item mb-10">
+                        <h4 class="font-bold text-blue-800">Weeks 6-8: Data Collection & ML Model Training</h4>
+                        <p class="text-sm text-slate-600">Collected a sample dataset, trained a neural network classifier in Python, and converted it to the TensorFlow Lite format.</p>
+                    </div>
+                     <div class="timeline-item mb-10">
+                        <h4 class="font-bold text-blue-800">Weeks 9-11: Integration & Testing</h4>
+                        <p class="text-sm text-slate-600">Deployed the model onto the ESP32-S3 and tested the full pipeline from sensors to alerts, refining thresholds for accuracy.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 class="font-bold text-blue-800">Week 12: Enclosure Design & Final Reporting</h4>
+                        <p class="text-sm text-slate-600">Designed and 3D printed a wearable enclosure and finalized all project documentation for demonstration.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section id="impact" class="py-16">
+             <div class="text-center">
+                <h2 class="text-3xl font-bold text-blue-900">Real-World Impact & Future Scope</h2>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">This technology has direct applications for enhancing safety across numerous critical sectors.</p>
+            </div>
+            <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                    <div class="text-4xl text-blue-500">✈️</div>
+                    <h4 class="font-bold mt-3">Defence & Aviation</h4>
+                    <p class="text-sm text-slate-600 mt-2">Monitoring pilots and drone operators during long missions to prevent fatigue-related errors.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                     <div class="text-4xl text-blue-500">⚕️</div>
+                    <h4 class="font-bold mt-3">Medical</h4>
+                    <p class="text-sm text-slate-600 mt-2">Assisting surgeons and residents in maintaining peak performance during lengthy, critical procedures.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                    <div class="text-4xl text-blue-500">🚚</div>
+                    <h4 class="font-bold mt-3">Transportation</h4>
+                    <p class="text-sm text-slate-600 mt-2">Preventing accidents caused by drowsy driving in commercial trucking and logistics.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                    <div class="text-4xl text-blue-500">🔬</div>
+                    <h4 class="font-bold mt-3">Future Scope</h4>
+                    <p class="text-sm text-slate-600 mt-2">Future work includes adding EEG sensors, using advanced ML models, and miniaturizing the design.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-blue-900 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Cognitive Monitor Project. An Embedded Systems Proof-of-Concept.</p>
+        </div>
+    </footer>
+
+<script>
+    let fatigueChart;
+    const statusBadge = document.getElementById('status-badge');
+    
+    const alertData = {
+        labels: ['-50s', '-40s', '-30s', '-20s', '-10s', 'Now'],
+        datasets: [{
+            label: 'Cognitive Index',
+            data: [25, 28, 22, 30, 25, 28],
+            borderColor: 'rgb(34, 197, 94)',
+            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            fill: true,
+            tension: 0.4,
+        }]
+    };
+
+    const fatiguedData = {
+        labels: ['-50s', '-40s', '-30s', '-20s', '-10s', 'Now'],
+        datasets: [{
+            label: 'Cognitive Index',
+            data: [45, 55, 62, 75, 85, 92],
+            borderColor: 'rgb(239, 68, 68)',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            fill: true,
+            tension: 0.4,
+        }]
+    };
+
+    const chartConfig = {
+        type: 'line',
+        data: alertData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Fatigue Score'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            animation: {
+                duration: 800
+            }
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('fatigueChart').getContext('2d');
+        fatigueChart = new Chart(ctx, chartConfig);
+        updateStatus('alert');
+    });
+
+    function updateChart(state) {
+        if (!fatigueChart) return;
+        if (state === 'alert') {
+            fatigueChart.data = alertData;
+        } else {
+            fatigueChart.data = fatiguedData;
+        }
+        fatigueChart.update();
+        updateStatus(state);
+    }
+    
+    function updateStatus(state) {
+        if (state === 'alert') {
+            statusBadge.textContent = 'Alert';
+            statusBadge.className = 'px-4 py-1 text-sm font-semibold rounded-full transition-colors bg-green-100 text-green-800';
+        } else {
+            statusBadge.textContent = 'Fatigued';
+            statusBadge.className = 'px-4 py-1 text-sm font-semibold rounded-full transition-colors bg-red-100 text-red-800';
+        }
+    }
+
+    document.getElementById('alertBtn').addEventListener('click', () => updateChart('alert'));
+    document.getElementById('fatiguedBtn').addEventListener('click', () => updateChart('fatigued'));
+
+    function showDetails(detailsId) {
+        const detailsEl = document.getElementById(detailsId);
+        const allDetails = document.querySelectorAll('.workflow-details');
+        const stageId = detailsId.replace('details', 'stage');
+        const stageEl = document.getElementById(stageId);
+        const allStages = document.querySelectorAll('.workflow-stage');
+
+        const isHidden = detailsEl.classList.contains('hidden');
+
+        allDetails.forEach(el => el.classList.add('hidden'));
+        allStages.forEach(el => el.classList.remove('bg-blue-50', 'border-blue-500'));
+        
+        if (isHidden) {
+            detailsEl.classList.remove('hidden');
+            stageEl.classList.add('bg-blue-50', 'border-blue-500');
+        }
+    }
+</script>
+
+</body>
+</html>
